@@ -2,6 +2,7 @@ package codes.trent.travelguide;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class PlaceAdapter extends ArrayAdapter<Place> {
         // Image setup
         ImageView image = (ImageView)listItem.findViewById(R.id.place_image);
         image.setImageResource(currentPlace.getSmallImage());
+        // On click open ImageActivity with intent and notify main activity
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +57,7 @@ public class PlaceAdapter extends ArrayAdapter<Place> {
         // Button setup
         Button button = (Button) listItem.findViewById(R.id.view_details);
         button.setText(R.string.view_details);
+        // On click open DetailsActivity with intent and notify main activity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
