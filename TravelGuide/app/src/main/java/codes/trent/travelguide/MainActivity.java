@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    PlaceFragment placeFragment;
+    PlacesFragment placesFragment;
     LastFragment lastFragment;
 
     @Override
@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onAttachFragment(fragment);
 
         // Store fragment reference in variable when it is attached.
-        if (fragment.getClass() == PlaceFragment.class ){
-            placeFragment = (PlaceFragment) fragment;
+        if (fragment.getClass() == PlacesFragment.class ){
+            placesFragment = (PlacesFragment) fragment;
         }
         if (fragment.getClass() == LastFragment.class ){
             lastFragment = (LastFragment) fragment;
