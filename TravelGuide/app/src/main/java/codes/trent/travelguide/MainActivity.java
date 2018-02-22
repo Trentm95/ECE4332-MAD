@@ -27,4 +27,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Forwards msg from PlacesFragment to LastFragment
+    public void onMsgFromFragToMain(String sender, String strValue) {
+        if(sender.equals("PlacesFragment")){
+            lastFragment.onMsgFromMainToFragment(strValue);
+        }
+    }
+
 }

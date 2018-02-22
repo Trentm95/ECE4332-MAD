@@ -6,6 +6,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 /**
@@ -13,6 +15,8 @@ import android.view.ViewGroup;
  */
 public class LastFragment extends Fragment {
 
+    FrameLayout frameLayout;
+    TextView textView;
 
     public LastFragment() {
         // Required empty public constructor
@@ -23,7 +27,15 @@ public class LastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_last, container, false);
+        frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_last, container, false);
+        textView = (TextView) frameLayout.findViewById(R.id.last_place);
+        textView.setText("View a place to travel!");
+        return frameLayout;
+    }
+
+    // Set msg as place
+    public void onMsgFromMainToFragment(String strValue){
+        textView.setText("Previously chosen travel place was " + strValue + ".");
     }
 
 }
