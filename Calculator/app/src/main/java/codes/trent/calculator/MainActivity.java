@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Stack;
+
 public class MainActivity extends AppCompatActivity {
 
     public TextView display;
@@ -15,10 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Plumbing for TextView
         display = findViewById(R.id.display);
     }
 
     public void buttonPress(View view){
+        // Handle press based on button
         switch (view.getId()) {
             case R.id.button0:
                 equation += "0";
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 equation += "/";
                 break;
             case R.id.buttonMul:
-                equation += "x";
+                equation += "*";
                 break;
             case R.id.buttonSub:
                 equation += "-";
@@ -77,8 +81,68 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.buttonEq:
+                equation = solve(equation);
                 break;
         }
         display.setText(equation);
+    }
+
+    public String solve(String eq){
+        return postfix(eq);
+    }
+
+    public String postfix(String infix) {
+        String out = "";
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch: infix.toCharArray()) {
+            if(ch == '/' || ch == '*' || ch == '+' || ch == '-'){
+                while(!stack.empty() && priority(stack.peek()) > priority(ch) ){ // Pop until lower priority is found
+                    out += stack.pop();
+                }
+                stack.push(ch); // Push current symbol
+            }
+            else if ( ch == '(') { // Left parenthesis is always pushed on stack
+                stack.push(ch);
+            }
+            else if ( ch == ')') { // Pop until matching parenthesis is found (Don't output parenthesis)
+                while(!stack.empty() && stack.peek() != '(' ){
+                    out += stack.pop();
+                }
+                if(!stack.empty()){
+                    stack.pop();
+                }
+            }
+            else {
+                out += ch;
+            }
+        }
+        // Pop remaining stack to output
+        while (!stack.empty()){
+            if(stack.peek() == '(' || stack.peek() == ')'){
+                stack.pop();
+            }
+            else { // Don't output parenthesis
+                out += stack.pop();
+            }
+        }
+        return out;
+    }
+
+    public int priority(char sym){
+        // Operator Priority
+        int pr = 0;
+
+        if(sym == '*' || sym == '/'){
+            pr = 2;
+        }
+        else if(sym == '-' || sym == '+'){
+            pr = 1;
+        }
+        else if(sym == '('){ // Lowest priority to prevent pop by anything but right parenthesis
+            pr = -1;
+        }
+
+        return pr;
     }
 }
