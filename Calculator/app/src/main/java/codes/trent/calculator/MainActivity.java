@@ -88,7 +88,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String solve(String eq){
-        return postfix(eq);
+        String postfix = postfix(eq);
+        Stack<Double> stack = new Stack<>();
+        String solution = "";
+
+        for (Character ch: postfix.toCharArray()) {
+            double temp1, temp2;
+            switch (ch) {
+                // If char is an operator pop stack twice and do operation
+                case '+':
+                    if(stack.size() >= 2){
+                        temp1 = stack.pop();
+                        temp2 = stack.pop();
+                        stack.push(temp2 + temp1);
+                    }
+                    break;
+                case '-':
+                    if(stack.size() >= 2){
+                        temp1 = stack.pop();
+                        temp2 = stack.pop();
+                        stack.push(temp2 - temp1);
+                    }
+                    break;
+                case '/':
+                    if(stack.size() >= 2){
+                        temp1 = stack.pop();
+                        temp2 = stack.pop();
+                        stack.push(temp2 / temp1);
+                    }
+                    break;
+                case '*':
+                    if(stack.size() >= 2){
+                        temp1 = stack.pop();
+                        temp2 = stack.pop();
+                        stack.push(temp2 * temp1);
+                    }
+                    break;
+                default: // If stack is an operand push to stack
+                    stack.push(Double.parseDouble(ch.toString()));
+                    break;
+            }
+        }
+
+        // Remaining char is answer
+        if (!stack.empty()){
+            solution = stack.pop().toString();
+        }
+
+        return solution;
     }
 
     public String postfix(String infix) {
@@ -112,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
                 if(!stack.empty()){
                     stack.pop();
                 }
+            }
+            else if (ch == '.') { // Decimals not supported clear input
+                return "";
             }
             else {
                 out += ch;
